@@ -3,7 +3,7 @@ TriCLFF: A Multi-modality feature fusion framework using contrastive learning fo
 # Overview
 TriCLFF is a contrastive learning framework to learn low-dimensional fusion embeddings of gene expression profiles and histological images. We first utilize three different kinds of encoders (i.e., graph autoencoder, multi-layer perception and Swin Transformer) to extract embeddings for spatial associations, gene expression levels and histological morphological features individually and then integrate them with a weighted sum method. To better capture the fusion features, we use contrastive learning strategy in both single-modality and cross-modality levels, which introducing six contrastive learning losses. Combined with GMM clustering method, our proposed TriCLFF framework can significantly improve the spatial domain identification accuracy and further benefit to other downstream analysis, such as trajectory inference and UMAP visualization. The implement details of TriCLFF are described in the following sections.
 
-![TriCLFF method](TriCLFF.tif)
+![TriCLFF method](TriCLFF.bmp)
 
 # Requirements
 To run TriCLFF, please ensure that all the libraries below are successfully installed:
@@ -29,10 +29,10 @@ python train.py
 Then run DLPFC_151672.ipynb or MouseBrain.ipynb
 The clustering labels will be stored in the dir `output` /dataname_pred.csv. 
 # Datasets
-The spatial transcriptomics datasets that support the findings of this study are available here:
-The DLPFC dataset is accessible within the spatialLIBD package (http://spatial.libd.org/spatialLIBD). 
-The MouseBrain dataset and human breast cancer data can be obtained at https://zenodo.org/record/6925603#.YuM5WXZBwuU. 
-The processed Stereo-seq data from mouse olfactory bulb tissue is accessible at https://github.com/JinmiaoChenLab/SEDR_analyses.
+- The spatial transcriptomics datasets that support the findings of this study are available here:
+- The DLPFC dataset is accessible within the spatialLIBD package (http://spatial.libd.org/spatialLIBD). 
+- The MouseBrain dataset and human breast cancer data can be obtained at https://zenodo.org/record/6925603#.YuM5WXZBwuU. 
+- The processed Stereo-seq data from mouse olfactory bulb tissue is accessible at https://github.com/JinmiaoChenLab/SEDR_analyses.
 # Contact
 Feel free to submit an issue or contact us at 18700872175@163.com for problems about the tool.
 # Citation
