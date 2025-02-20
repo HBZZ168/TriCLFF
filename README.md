@@ -35,7 +35,7 @@ Specify specific sample data in the train.py file, you can first run:
 - The MouseBrain dataset and human breast cancer data can be obtained at https://zenodo.org/record/6925603#.YuM5WXZBwuU. 
 - The processed Stereo-seq data from mouse olfactory bulb tissue is accessible at https://github.com/JinmiaoChenLab/SEDR_analyses.
 # Contact
-Feel free to submit an issue or contact us at 18700872175@163.com for problems about the tool.
+Feel free to submit an issue or contact us at qhjiang@hit.edu.cn for problems about the tool.
 # Citation
 Please cite our paper:
 ```
