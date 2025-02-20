@@ -25,10 +25,10 @@ Then you can run:
 
 # Run TRiCLFF on the example data.
 Specify specific sample data in the train.py file, you can first run: 
-python train.py
+- python train.py
 # output
-Then run DLPFC_151672.ipynb or MouseBrain.ipynb
-The clustering labels will be stored in the dir `output` /dataname_pred.csv. 
+- Then run DLPFC_151672.ipynb or MouseBrain.ipynb.
+- The clustering labels will be stored in the dir `output` /dataname_pred.csv. 
 # Datasets
 - The spatial transcriptomics datasets that support the findings of this study are available here:
 - The DLPFC dataset is accessible within the spatialLIBD package (http://spatial.libd.org/spatialLIBD). 
