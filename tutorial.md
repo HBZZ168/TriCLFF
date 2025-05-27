@@ -1,16 +1,16 @@
 # Tutorial:10X Visium
 
-- In this tutorial, we show how to apply TriCLFF to identify spatial domains on 10X Visium data. As a example, we analyse the 151672 sample of the dorsolateral prefrontal cortex (DLPFC) dataset. Maynard et al. has manually annotated DLPFC layers and white matter (WM) based on the morphological features and gene markers. We derived the preprocessed data from the HumanPilot package(https://github.com/LieberInstitute/HumanPilot).The 10X folder of the HumanPilot package contains tissue_hires_image.png,tissue_positions_list.csv, and scalefactors_json.json files for each of the 12 DLPFC data. Other data such as filtered_feature_bc_matrix.h5, 151672_full_image.tif, etc. can be downloaded in the Raw data section of the linked page above. The annotation (metadata.tsv) for 151672 slice can be downloaded from 
+In this tutorial, we demonstrate how to apply TriCLFF to identify spatial domains in 10X Visium data. As an example, we analyse the 151672 sample of the dorsolateral prefrontal cortex (DLPFC) dataset. Maynard et al. have manually annotated DLPFC layers and white matter (WM) based on the morphological features and gene markers. We derived the preprocessed data from the HumanPilot package (https://github.com/LieberInstitute/HumanPilot). The 10X folder of the HumanPilot package contains tissue_hires_image.png, tissue_positions_list.csv, and scalefactors_json.json files for each of the 12 DLPFC data. Other data, such as filtered_feature_bc_matrix.h5, 151672_full_image.tif, etc., can be downloaded in the Raw data section of the linked page above. The annotation (metadata.tsv) for the 151672 slice can be downloaded from 
 https://github.com/JinmiaoChenLab/SEDR_analyses/tree/master/data/DLPFC/151672. 
 
-- The following passage is a specific explanation and description of the code in train.py. The train.py mainly includes loading package, reading ST data, training the model, and clustering. To be specific:
+- The following passage is a specific explanation and description of the code in train.py. The train.py mainly includes loading the package, reading the ST data, training the model, and clustering. To be specific:
 1. seed_torch(seed) is mainly used to set global random seeds in PyTorch projects to ensure the reproducibility of the model training process. 
-2. read various parameter configurations, including the learning rate, network structure, data path, etc. 
-3. the necessary input files includes: 1) gene expression matrix: filtered_feature_bc_matrix.h5; 2) Spatial coordinates: tissue_positions_list.csv; 3) Histology image: the format should be .tif or .png. In the example, position inforamtion has been saved in adata.obsm[‘spatial’]. To make the model can read the data sucessfully, please ensure the same format input file as example. 
-4. various perturbation strategies, such as masking, and noise, were applied to the gene expression data to enhance the robustness of the model. 
-5. In the model construction part, the multimodal feature extraction network SpaCLR was initialized for fusing graph structure, gene expression and Histology images information. The AdamW optimizer was adopted to optimize the model. TriCLFF model aims to extract features from multi-modal data by making full use of gene expressions, spatial location and Histology images information in a self-supervised learning way. After model training, the embeddings of multi-modal data (xg, xg1, xi) are extracted and fused. Finally, the clustering performance (ARI values) are calculated through the get_predicted_results function. The obtained embedding results are saved as three.npy files for subsequent spatial clustering analysis and visualization.
+2. Read various parameter configurations, including the learning rate, network structure, data path, etc. 
+3. The necessary input files include: 1) gene expression matrix: filtered_feature_bc_matrix.h5; 2) Spatial coordinates: tissue_positions_list.csv; 3) Histology image: the format should be .tif or .png. In the example, position information has been saved in adata.obsm[‘spatial’]. To make the model read the data successfully, please ensure the same format as the example. 
+4. Various perturbation strategies, such as masking and noise, were applied to the gene expression data to enhance the robustness of the model. 
+5. In the model construction part, the multimodal feature extraction network SpaCLR was initialized for fusing the graph structure, gene expression, and Histology images information. The AdamW optimizer was adopted to optimize the model. The TriCLFF model aims to extract features from multi-modal data by making full use of gene expressions, spatial location, and Histology images information in a self-supervised learning way. After model training, the embeddings of multi-modal data (xg, xg1, xi) are extracted and fused. Finally, the clustering performance (ARI values) is calculated through the get_predicted_results function. The obtained embedding results are saved as three.npy files for subsequent spatial clustering analysis and visualization.
 
-- You need to run each of the following steps in the Jupyter notebook, the specific execution steps of TriCLFF and the results of each step are as follows:
+- You need to run each of the following steps in the Jupyter notebook; the specific execution steps of TriCLFF and the results of each step are as follows:
 
 ```python
 %run train.py
@@ -128,7 +128,7 @@ import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 ```
-- After model training, you can load the saved multi-modal feature embeddings (xg, xg1, xi) and then perform a weighted summation of the embeddings to obtain a final embedding z. z is used as input of the get_predicted_results function for spatial clustering. In our experiment, we use mclust tool for spaital clustering and save the predicted clustering labels as CSV files. It is an inference and result export module in the spatial transcriptome clustering task. This step enables the model to integrate complementary information from multiple modalities for improved spatial domain identification. For quantitative assessment, we use well-known ARI metric to evaulate the performance.
+- After model training, you can load the saved multi-modal feature embeddings (xg, xg1, xi) and then perform a weighted summation of the embeddings to obtain a final embedding z. The z is used as input to the get_predicted_results function for spatial clustering. In our experiment, we use the mclust tool for spatial clustering and save the predicted clustering labels as CSV files. It is an inference and result export module in the spatial transcriptome clustering task. This step enables the model to integrate complementary information from multiple modalities for improved spatial domain identification. For quantitative assessment, we use the well-known ARI metric to evaluate the performance.
 ```python
 xg = np.load(f'embeddings/{args.name}_xg.npy')
 xg1 = np.load(f'embeddings/{args.name}_xg1.npy')
@@ -145,7 +145,7 @@ fitting ...
   |======================================================================| 100%
 Adjusted rand index = 0.584
 ```
-- Specifically, we loads the spatial transcriptomics data using load_ST_file, reads the predicted cluster labels from a CSV file, filters out invalid predictions (i.e., label -1), and assigns the cleaned cluster labels to the obs attribute of the AnnData object under the column name 'TriCLFF'. This step facilitates downstream analyses such as spatial visualization and marker gene detection based on the predicted spatial domains. 
+- Specifically, we load the spatial transcriptomics data using load_ST_file, read the predicted cluster labels from a CSV file, filter out invalid predictions (i.e., label -1), and assign the cleaned cluster labels to the obs attribute of the AnnData object under the column name 'TriCLFF'. This step facilitates downstream analyses such as spatial visualization and marker gene detection based on the predicted spatial domains. 
 ```python
 adata = load_ST_file(os.path.join(args.path, args.name))
 pred = pd.read_csv(f'output/151672/151672_pred1.csv')['cluster_labels']
