@@ -148,7 +148,7 @@ Adjusted rand index = 0.584
 - Specifically, we load the spatial transcriptomics data using load_ST_file, read the predicted cluster labels from a CSV file, filter out invalid predictions (i.e., label -1), and assign the cleaned cluster labels to the obs attribute of the AnnData object under the column name 'TriCLFF'. This step facilitates downstream analyses such as spatial visualization and marker gene detection based on the predicted spatial domains. 
 ```python
 adata = load_ST_file(os.path.join(args.path, args.name))
-pred = pd.read_csv(f'output/151672/151672_pred1.csv')['cluster_labels']
+pred = pd.read_csv(f'output/151672/151672_pred.csv')['cluster_labels']
 pred = pred[pred != -1]
 adata.obs['TriCLFF'] = pred.array.astype(str)
 adata
