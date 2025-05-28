@@ -1,9 +1,9 @@
 # Tutorial:10X Visium
 
-- In this tutorial, we show how to apply TriCLFF to identify spatial domains on 10X Visium data. As a example, we analyse the 151672 sample of the dorsolateral prefrontal cortex (DLPFC) dataset. We derived the data from the HumanPilot package (https://github.com/LieberInstitute/HumanPilot). The 10X folder of the HumanPilot package contains tissue_hires_image.png,tissue_positions_list.csv, and scalefactors_json.json files for each of the 12 DLPFC data. Other data such as filtered_feature_bc_matrix.h5, 151672_full_image.tif, etc. can be downloaded in the Raw data section of the linked page above. The annotation (metadata.tsv) for 151672 slice can be downloaded from 
+In this tutorial, we demonstrate how to apply TriCLFF to identify spatial domains in 10X Visium data. As an example, we analyse the 151672 sample of the dorsolateral prefrontal cortex (DLPFC) dataset. We derived the data from the HumanPilot package (https://github.com/LieberInstitute/HumanPilot). The 10X folder of the HumanPilot package contains the following files: tissue_hires_image.png, tissue_positions_list.csv, and scalefactors_json.json, each corresponding to one of the 12 DLPFC datasets. Other data, such as filtered_feature_bc_matrix.h5, 151672_full_image.tif, etc., can be downloaded in the Raw data section of the linked page above. The annotation (metadata.tsv) for the 151672 slice can be downloaded from 
 https://github.com/JinmiaoChenLab/SEDR_analyses/tree/master/data/DLPFC/151672. 
 
-- The following paragraphs explain and describe the key functions called in run_TriCLFF.py, including seed_torch(seed), train(args, name) and __main__.
+- The following paragraphs explain and describe the key functions called in run_TriCLFF.py, including seed_torch(seed), train(args, name), and __main__.
 1. The seed_torch function is mainly used to set global random seeds in PyTorch projects to ensure the reproducibility of the model training process.  
 ```python
 def seed_torch(seed):
@@ -15,11 +15,11 @@ def seed_torch(seed):
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 ```
-2. The train(args, name) function mainly includes importing the package, reading parameter configurations, reading ST data, training the model, and clustering. It takes various parameters from the __main__ function in run_TriCLFF.py such as the data path, the learning rate, batch_size, various weights, etc, and the dataset name.
+2. The train(args, name) function mainly includes importing the package, reading parameter configurations, reading ST data, training the model, and clustering. It takes various parameters from the __main__ function in run_TriCLFF.py, such as the data path, the learning rate, batch_size, various weights, etc, and the dataset name.
 ```python
 def train(args, name):
 ```
-3. The __main__ function in run_TriCLFF.py is used to configure and initiate the training process of the spatial transcriptome multi-modal learning model. It defines a series of command-line parameters through the argparse module. Including dataset selection, path setting, gene preprocessing methods, model structure parameters (such as last dimensions, learning rate, dropout probability), multi-modal loss weights, data augmentation strategies weights (such as masking, noise, exchange), and training settings (such as batch size, epochs, device, name, etc.). At runtime, these parameters will be parsed, configuration information will be output, and the train(args, args.name) function will be called to officially start the training process.
+3. The __main__ function in run_TriCLFF.py is used to configure and initiate the training process of the spatial transcriptome multi-modal learning model. It defines a series of command-line parameters through the argparse module, including dataset selection, path setting, gene preprocessing methods, model structure parameters (such as last dimensions, learning rate, dropout probability), multi-modal loss weights, data augmentation strategies weights (such as masking, noise, exchange), and training settings (such as batch size, epochs, device, name, etc.). At runtime, these parameters will be parsed, configuration information will be output, and the train(args, args.name) function will be called to start the training process officially.
 
 ```python
 if __name__ == '__main__':
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     train(args, args.name)
 
 ```
-- You need to run each of the following steps in the Jupyter notebook, the specific execution steps of TriCLFF and the results of each step are as follows:
+- You need to run each of the following steps in the Jupyter notebook; the specific execution steps of TriCLFF and the results of each step are as follows:
 
 ```python
 %run run_TriCLFF.py
@@ -190,7 +190,7 @@ import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 ```
-- After model training, the embeddings of multi-modal data (xg, xg1, xi) are extracted and fused. The obtained embedding are saved as three.npy files for subsequent spatial clustering analysis and visualization. You can load the saved multi-modal feature embeddings (xg, xg1, xi) and then perform a weighted summation of the embeddings to obtain a final embedding z and it is used as input of the get_predicted_results function for spatial clustering. In our experiment, we use mclust tool for spaital clustering and save the predicted clustering labels as CSV files. This step enables the model to integrate complementary information from multiple modalities for improved spatial domain identification. For quantitative assessment, we use well-known ARI metric to evaulate the performance.
+- After model training, the embeddings of multi-modal data (xg, xg1, xi) are extracted and fused. The obtained embeddings are saved as three .npy files for subsequent spatial clustering analysis and visualization. You can load the saved multi-modal feature embeddings (xg, xg1, xi) and then perform a weighted summation of the embeddings to obtain a final embedding z and which is used as input to the get_predicted_results function for spatial clustering. In our experiment, we use the mclust tool for spatial clustering and save the predicted clustering labels as CSV files. This step enables the model to integrate complementary information from multiple modalities for improved spatial domain identification. For quantitative assessment, we use the well-known ARI metric to evaluate the performance.
 ```python
 xg = np.load(f'embeddings/{args.name}_xg.npy')
 xg1 = np.load(f'embeddings/{args.name}_xg1.npy')
@@ -209,7 +209,7 @@ fitting ...
   |======================================================================| 100%
 Adjusted rand index = 0.584
 ```
-- Specifically, we loads the spatial transcriptomics data using load_ST_file, reads the predicted cluster labels from a CSV file, filters out invalid predictions (i.e., label -1), and assigns the cleaned cluster labels to the obs attribute of the AnnData object under the column name 'TriCLFF'. This step facilitates downstream analyses such as spatial visualization and marker gene detection based on the predicted spatial domains. 
+- Specifically, we load the spatial transcriptomics data using load_ST_file, read the predicted cluster labels from a CSV file, filter out invalid predictions (i.e., label -1), and assign the cleaned cluster labels to the obs attribute of the AnnData object under the column name 'TriCLFF'. This step facilitates downstream analyses such as spatial visualization and marker gene detection based on the predicted spatial domains. 
 ```python
 adata = load_ST_file(os.path.join(args.path, args.name))
 pred = pd.read_csv(f'output/151672/151672_pred.csv')['cluster_labels']
