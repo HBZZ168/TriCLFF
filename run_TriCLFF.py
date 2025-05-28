@@ -18,7 +18,6 @@ if __name__ == '__main__':
 
     # preprocess
     parser.add_argument('--dataset', type=str, default="SpatialLIBD")   
-    #MouseOlfactoryBulb  BreastCancer  MouseBrain  SpatialLIBD  Slideseq
     parser.add_argument('--path', type=str, default="/root/autodl-tmp/ConGI/data/DLPFC")   #/DLPFC
     parser.add_argument("--gene_preprocess", choices=("pca", "hvg"), default="hvg") 
     parser.add_argument("--n_gene", choices=(300, 1000, 3000), default=3000)
