@@ -11,13 +11,13 @@ To run TriCLFF, please ensure that all the libraries below are successfully inst
 - torch 2.0.0
 - CUDA Version 11.7
 - scanpy 1.8.1
-- mclust
+- R包mclust
 - R 4.2.0
 - Python 3.8.10
 
 You can set up a conda environment for TriCLFF：
-- conda env create -n TriCLFF python=3.8.10
-- conda activate TriCLFF
+- conda create -n TriCLFF python=3.8.10 r-base=4.2.0 -y
+- conda activate TriCLFF（有时候可能用绝对路径才行）
 - pip install torch==2.0.0+cu117 torchvision==0.15.1+cu117 -f https://download.pytorch.org/whl/torch_stable.html
 - pip install torch_scatter==2.1.1 torch_sparse==0.6.17 -f https://data.pyg.org/whl/torch-2.0.0%2Bcu117.html
 - pip install torch-geometric==2.3.0
@@ -26,7 +26,7 @@ Then you can run:
 - pip install -r requirements.txt
 
 # Run TriCLFF on the example data.
-Specify specific sample data in the train.py file, You can run the program by following the steps in tutorial.md.
+Specify specific sample data in the run_TriCLFF.py file, You can run the program by following the steps in tutorial.md.
 The operation results and explanations of each step have been clearly written out.
 # output
 - The clustering labels will be stored in the dir `output`. 
@@ -47,7 +47,7 @@ Please cite our paper:
   Xiyun Jin2, Qian Ding1, Zuxiang Wang2, Meng Luo1, Yuexin Yang1, Yi Lin2, Renjie Tan2, Yusong Liu2*, Zhaochun Xu2*, Qinghua Jiang1,2*},
   journal={Briefings in Bioinformatics},
   year={2025}
- publisher={Jiang Qinghua Laboratory, Harbin Institute of Technology}
+ publisher {Jiang Qinghua Laboratory, Harbin Institute of Technology}
 }
 ```
 
