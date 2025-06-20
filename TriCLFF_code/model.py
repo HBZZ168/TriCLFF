@@ -64,7 +64,7 @@ class GATEncoder(torch.nn.Module):
         return h2, h4, h_h  # F.log_softmax(x, dim=-1)
 
 class SpaCLR(nn.Module):
-    def __init__(self, gene_dims, image_dims, p_drop, n_pos, backbone='swin_s', projection_dims=[64, 64], hidden_dims=[512, 30], is_gat=True):
+    def __init__(self, gene_dims, image_dims, p_drop, n_pos, backbone='swin_s', projection_dims=[30, 30], hidden_dims=[512, 30], is_gat=True):
         super(SpaCLR, self).__init__()
         gene_dims.append(projection_dims[0])
         if not is_gat:
