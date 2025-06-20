@@ -117,7 +117,7 @@ class SpaCLR(nn.Module):
             nn.ReLU(),
             nn.Linear(projection_dims[0], projection_dims[1]),
             nn.ReLU(),
-            nn.Linear(projection_dims[0], projection_dims[1]),
+            nn.Linear(projection_dims[1], projection_dims[1]),
             nn.Tanh()
         )
         self.projector2 = nn.Sequential(
@@ -125,7 +125,7 @@ class SpaCLR(nn.Module):
             nn.ReLU(),
             nn.Linear(projection_dims[0], projection_dims[1]),
             nn.ReLU(),
-            nn.Linear(projection_dims[0], projection_dims[1]),
+            nn.Linear(projection_dims[1], projection_dims[1]),
             nn.Tanh()
         )
         self.projector3 = nn.Sequential(
@@ -133,7 +133,7 @@ class SpaCLR(nn.Module):
             nn.ReLU(),
             nn.Linear(projection_dims[0], projection_dims[1]),
             nn.ReLU(),
-            nn.Linear(projection_dims[0], projection_dims[1]),
+            nn.Linear(projection_dims[1], projection_dims[1]),
             nn.Tanh()
         )
     def forward_image(self, xi, spatial):
